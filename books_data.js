@@ -1,5 +1,4 @@
 const BOOKS = [
-{"t":"100 Anglijskij","lt":"https://www.google.com/search?q=100%20Anglijskij%20knyga%20apra%C5%A1ymas","en":"https://www.google.com/search?q=100%20Anglijskij%20book%20description","g":"Kita"},
 {"t":"100 Biografiju - Nuo Abraomo iki Viduramziu","lt":"https://www.google.com/search?q=100%20Biografiju%20-%20Nuo%20Abraomo%20iki%20Viduramziu%20knyga%20apra%C5%A1ymas","en":"https://www.google.com/search?q=100%20Biografiju%20-%20Nuo%20Abraomo%20iki%20Viduramziu%20book%20description","g":"Biografija"},
 {"t":"7 radijo paskaitos apie Lietuvos istorija","lt":"https://www.google.com/search?q=7%20radijo%20paskaitos%20apie%20Lietuvos%20istorija%20knyga%20apra%C5%A1ymas","en":"https://www.google.com/search?q=7%20radijo%20paskaitos%20apie%20Lietuvos%20istorija%20book%20description","g":"Istorinis"},
 {"t":"A Guoga - Nematoma sekmes puse","lt":"https://www.google.com/search?q=A%20Guoga%20-%20Nematoma%20sekmes%20puse%20knyga%20apra%C5%A1ymas","en":"https://www.google.com/search?q=A%20Guoga%20-%20Nematoma%20sekmes%20puse%20book%20description","g":"Saviugda"},
