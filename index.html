@@ -3,482 +3,264 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Audio Knygos LT — Biblioteka</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Audio Knygos LT</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0c0c0d;
-    --surface: #141416;
-    --surface2: #1a1a1e;
-    --border: #252528;
-    --accent: #c8a96e;
-    --accent2: #7eb8c9;
-    --green: #7ec99a;
-    --red: #c97e7e;
-    --purple: #a07ec9;
-    --orange: #c9a07e;
-    --text: #e8e4dc;
-    --muted: #5a5755;
-    --muted2: #888480;
-    --hover: #1c1c20;
+    --bg:#f5f0e8;--bg2:#ede8df;--surface:#ffffff;--border:#ddd8ce;--border2:#c8c2b6;
+    --ink:#1a1714;--ink2:#4a4540;--muted:#9a9388;--accent:#c0392b;--accent-lt:#f0e0de;
+    --teal:#1a7a6e;--teal-lt:#d8f0ed;--amber:#b85c00;--amber-lt:#fdefd8;
+    --violet:#5b3fa6;--violet-lt:#ece6f8;--rose:#b03070;--rose-lt:#f8e0ec;
+    --forest:#2d6a3f;--forest-lt:#ddf0e4;--slate:#3a5068;--slate-lt:#dde8f0;
+    --radius:6px;--shadow:0 1px 3px rgba(0,0,0,0.08),0 4px 16px rgba(0,0,0,0.04);
   }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;font-size:14px;min-height:100vh}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  header{background:var(--surface);border-bottom:1px solid var(--border);padding:18px 40px 14px;position:sticky;top:0;z-index:100;box-shadow:var(--shadow)}
+  .header-row1{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .brand{display:flex;align-items:baseline;gap:12px}
+  h1{font-family:'Instrument Serif',serif;font-size:1.7rem;color:var(--ink);letter-spacing:-0.01em}
+  h1 span{color:var(--accent)}
+  .pill-count{background:var(--accent);color:white;font-size:.65rem;font-weight:600;letter-spacing:.06em;padding:3px 9px;border-radius:20px;text-transform:uppercase}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    min-height: 100vh;
-  }
+  .classify-btn{display:flex;align-items:center;gap:7px;background:var(--ink);color:white;border:none;font-family:'Inter',sans-serif;font-size:.78rem;font-weight:500;padding:9px 18px;border-radius:var(--radius);cursor:pointer;transition:all .18s}
+  .classify-btn:hover{background:#333;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.2)}
+  .classify-btn:disabled{background:var(--border2);color:var(--muted);cursor:not-allowed;transform:none;box-shadow:none}
 
-  /* HEADER */
-  header {
-    border-bottom: 1px solid var(--border);
-    padding: 32px 48px 24px;
-    position: sticky;
-    top: 0;
-    background: rgba(12,12,13,0.97);
-    z-index: 100;
-    backdrop-filter: blur(16px);
-  }
+  .header-row2{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .search-wrap{position:relative;flex:1;min-width:200px;max-width:320px}
+  #search{width:100%;background:var(--bg);border:1.5px solid var(--border);color:var(--ink);font-family:'Inter',sans-serif;font-size:.82rem;padding:8px 12px 8px 34px;border-radius:var(--radius);outline:none;transition:border-color .18s,box-shadow .18s}
+  #search:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-lt)}
+  .search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none}
 
-  .header-top {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin-bottom: 18px;
-  }
+  .genre-scroll{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+  .gp{font-family:'Inter',sans-serif;font-size:.72rem;font-weight:500;padding:5px 11px;border-radius:20px;border:1.5px solid var(--border);color:var(--ink2);background:var(--bg);cursor:pointer;transition:all .15s;white-space:nowrap;user-select:none}
+  .gp:hover{border-color:var(--border2);background:var(--bg2)}
+  .gp.active[data-g="Visi"]{background:var(--ink);color:white;border-color:var(--ink)}
+  .gp.active[data-g="Detektyvas"]{background:var(--teal);color:white;border-color:var(--teal)}
+  .gp.active[data-g="Drama"]{background:var(--violet);color:white;border-color:var(--violet)}
+  .gp.active[data-g="Trileris"]{background:var(--accent);color:white;border-color:var(--accent)}
+  .gp.active[data-g="Fantastika"]{background:var(--slate);color:white;border-color:var(--slate)}
+  .gp.active[data-g="Istorinis"]{background:var(--amber);color:white;border-color:var(--amber)}
+  .gp.active[data-g="Romantika"]{background:var(--rose);color:white;border-color:var(--rose)}
+  .gp.active[data-g="Biografija"]{background:#5a5244;color:white;border-color:#5a5244}
+  .gp.active[data-g="Siaubo"]{background:#2a2420;color:white;border-color:#2a2420}
+  .gp.active[data-g="Saviugda"]{background:var(--forest);color:white;border-color:var(--forest)}
+  .gp.active[data-g="Humoristinis"]{background:#c07820;color:white;border-color:#c07820}
+  .gp.active[data-g="Vaikams"]{background:#1a6a8e;color:white;border-color:#1a6a8e}
+  .gp.active[data-g="Kita"]{background:var(--ink2);color:white;border-color:var(--ink2)}
 
-  .header-left { display: flex; align-items: baseline; gap: 20px; }
+  /* MODAL */
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(4px);z-index:200;align-items:center;justify-content:center}
+  .modal-overlay.open{display:flex}
+  .modal{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:28px 32px;max-width:480px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+  .modal h2{font-family:'Instrument Serif',serif;font-size:1.3rem;margin-bottom:8px}
+  .modal p{font-size:.82rem;color:var(--ink2);line-height:1.5;margin-bottom:16px}
+  .modal a{color:var(--teal)}
+  .api-input{width:100%;border:1.5px solid var(--border);background:var(--bg);font-family:'Inter',monospace;font-size:.8rem;padding:10px 12px;border-radius:var(--radius);outline:none;margin-bottom:12px;transition:border-color .18s}
+  .api-input:focus{border-color:var(--accent)}
+  .modal-btns{display:flex;gap:8px;justify-content:flex-end}
+  .btn-cancel{background:none;border:1.5px solid var(--border);color:var(--ink2);font-family:'Inter',sans-serif;font-size:.8rem;padding:8px 16px;border-radius:var(--radius);cursor:pointer}
+  .btn-cancel:hover{background:var(--bg2)}
+  .btn-start{background:var(--ink);color:white;border:none;font-family:'Inter',sans-serif;font-size:.8rem;font-weight:500;padding:8px 18px;border-radius:var(--radius);cursor:pointer;transition:background .15s}
+  .btn-start:hover{background:#333}
 
-  h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.8rem;
-    color: var(--accent);
-    letter-spacing: -0.02em;
-  }
+  #prog-wrap{display:none;margin-top:10px;background:var(--bg2);border-radius:4px;height:3px;overflow:hidden}
+  #prog-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--violet));transition:width .4s}
+  #prog-label{display:none;font-size:.68rem;color:var(--muted);margin-top:4px}
 
-  .count {
-    color: var(--muted2);
-    font-size: 0.7rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
+  main{max-width:1200px;margin:0 auto;padding:24px 40px 64px}
+  .table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+  table{width:100%;border-collapse:collapse}
+  thead th{background:var(--bg2);text-align:left;font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:10px 16px;border-bottom:1px solid var(--border)}
+  .book-row{border-bottom:1px solid var(--bg2);transition:background .1s}
+  .book-row:last-child{border-bottom:none}
+  .book-row:hover{background:#faf7f2}
+  .book-row td{padding:9px 16px;vertical-align:middle}
+  .td-num{color:var(--muted);font-size:.68rem;width:44px;text-align:right;font-variant-numeric:tabular-nums}
+  .td-title{font-family:'Instrument Serif',serif;font-size:.97rem;color:var(--ink);line-height:1.3}
 
-  .classify-btn {
-    background: none;
-    border: 1px solid var(--accent);
-    color: var(--accent);
-    font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-    padding: 8px 18px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .classify-btn:hover { background: var(--accent); color: var(--bg); }
-  .classify-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .gb{display:inline-block;font-size:.62rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:3px 7px;border-radius:2px;background:var(--bg2);color:var(--muted);border:1px solid var(--border);white-space:nowrap}
+  .gb[data-g="Detektyvas"]{background:var(--teal-lt);color:var(--teal);border-color:#9dd8d2}
+  .gb[data-g="Drama"]{background:var(--violet-lt);color:var(--violet);border-color:#baaee0}
+  .gb[data-g="Trileris"]{background:var(--accent-lt);color:var(--accent);border-color:#e0aaaa}
+  .gb[data-g="Fantastika"]{background:var(--slate-lt);color:var(--slate);border-color:#aabece}
+  .gb[data-g="Istorinis"]{background:var(--amber-lt);color:var(--amber);border-color:#e0c090}
+  .gb[data-g="Romantika"]{background:var(--rose-lt);color:var(--rose);border-color:#dda0c0}
+  .gb[data-g="Biografija"]{background:#f0ece6;color:#5a5244;border-color:#ccc4b8}
+  .gb[data-g="Siaubo"]{background:#2a2420;color:#cc9988;border-color:#4a3830}
+  .gb[data-g="Saviugda"]{background:var(--forest-lt);color:var(--forest);border-color:#90cca4}
+  .gb[data-g="Humoristinis"]{background:#fef4e0;color:#c07820;border-color:#e0c080}
+  .gb[data-g="Vaikams"]{background:#e0f0f8;color:#1a6a8e;border-color:#90c8e0}
+  .gb[data-g="Kita"]{background:var(--bg2);color:var(--ink2);border-color:var(--border2)}
 
-  /* CONTROLS ROW */
-  .controls {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    flex-wrap: wrap;
-  }
+  .td-links{width:100px;white-space:nowrap}
+  .btn-lt,.btn-en{display:inline-block;font-size:.66rem;font-weight:500;padding:3px 8px;border-radius:2px;text-decoration:none;transition:all .14s;margin-right:4px;border:1px solid}
+  .btn-lt{border-color:var(--teal);color:var(--teal);background:var(--teal-lt)}
+  .btn-lt:hover{background:var(--teal);color:white}
+  .btn-en{border-color:var(--slate);color:var(--slate);background:var(--slate-lt)}
+  .btn-en:hover{background:var(--slate);color:white}
 
-  .search-wrap {
-    position: relative;
-    flex: 1;
-    min-width: 220px;
-    max-width: 380px;
-  }
-
-  #search {
-    width: 100%;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    font-size: 0.82rem;
-    padding: 9px 14px 9px 36px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  #search:focus { border-color: var(--accent); }
-
-  .search-icon {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--muted);
-    font-size: 0.9rem;
-    pointer-events: none;
-  }
-
-  /* GENRE FILTERS */
-  .genre-filters {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-
-  .genre-tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 5px 12px;
-    border: 1px solid var(--border);
-    color: var(--muted2);
-    cursor: pointer;
-    transition: all 0.15s;
-    user-select: none;
-    background: none;
-  }
-  .genre-tag:hover { border-color: var(--muted2); color: var(--text); }
-  .genre-tag.active { color: var(--bg); border-color: transparent; }
-
-  /* Genre colors */
-  .genre-tag[data-genre="Detektyvas"].active { background: var(--accent2); }
-  .genre-tag[data-genre="Drama"].active { background: var(--purple); }
-  .genre-tag[data-genre="Trileris"].active { background: var(--red); }
-  .genre-tag[data-genre="Fantastika"].active { background: #6aaa8e; }
-  .genre-tag[data-genre="Istorinis"].active { background: var(--accent); }
-  .genre-tag[data-genre="Romantika"].active { background: #c97eaa; }
-  .genre-tag[data-genre="Biografija"].active { background: var(--orange); }
-  .genre-tag[data-genre="Siaubo"].active { background: #8e6a6a; }
-  .genre-tag[data-genre="Saviugda"].active { background: var(--green); }
-  .genre-tag[data-genre="Humoristinis"].active { background: #c9c07e; }
-  .genre-tag[data-genre="Vaikams"].active { background: #7eaac9; }
-  .genre-tag[data-genre="Kita"].active { background: var(--muted2); }
-
-  /* PROGRESS */
-  #progress-bar-wrap {
-    display: none;
-    margin-top: 14px;
-    height: 3px;
-    background: var(--border);
-    position: relative;
-    overflow: hidden;
-  }
-  #progress-bar {
-    height: 100%;
-    background: var(--accent);
-    width: 0%;
-    transition: width 0.3s;
-  }
-  #progress-label {
-    font-size: 0.65rem;
-    color: var(--muted2);
-    margin-top: 6px;
-    display: none;
-  }
-
-  /* TABLE */
-  main { padding: 0 48px 64px; }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-
-  thead th {
-    text-align: left;
-    font-size: 0.62rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--muted);
-    padding: 10px 14px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .book-row {
-    border-bottom: 1px solid rgba(37,37,40,0.7);
-    transition: background 0.12s;
-  }
-  .book-row:hover { background: var(--hover); }
-  .book-row td { padding: 10px 14px; vertical-align: middle; }
-
-  .num { color: var(--muted); font-size: 0.68rem; width: 44px; text-align: right; }
-
-  .title {
-    font-family: 'Playfair Display', serif;
-    font-size: 0.92rem;
-    color: var(--text);
-  }
-
-  .genre-cell { width: 130px; }
-
-  .genre-badge {
-    display: inline-block;
-    font-size: 0.6rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 3px 8px;
-    border-radius: 0;
-    background: var(--surface2);
-    color: var(--muted2);
-    border: 1px solid var(--border);
-    white-space: nowrap;
-  }
-  .genre-badge.classified { background: var(--surface2); }
-  .genre-badge[data-g="Detektyvas"] { color: var(--accent2); border-color: var(--accent2); }
-  .genre-badge[data-g="Drama"] { color: var(--purple); border-color: var(--purple); }
-  .genre-badge[data-g="Trileris"] { color: var(--red); border-color: var(--red); }
-  .genre-badge[data-g="Fantastika"] { color: #6aaa8e; border-color: #6aaa8e; }
-  .genre-badge[data-g="Istorinis"] { color: var(--accent); border-color: var(--accent); }
-  .genre-badge[data-g="Romantika"] { color: #c97eaa; border-color: #c97eaa; }
-  .genre-badge[data-g="Biografija"] { color: var(--orange); border-color: var(--orange); }
-  .genre-badge[data-g="Siaubo"] { color: #c98e8e; border-color: #8e6a6a; }
-  .genre-badge[data-g="Saviugda"] { color: var(--green); border-color: var(--green); }
-  .genre-badge[data-g="Humoristinis"] { color: #c9c07e; border-color: #c9c07e; }
-  .genre-badge[data-g="Vaikams"] { color: #7eaac9; border-color: #7eaac9; }
-
-  .links { width: 110px; white-space: nowrap; }
-
-  .btn-lt, .btn-en {
-    display: inline-block;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.62rem;
-    letter-spacing: 0.05em;
-    padding: 4px 9px;
-    text-decoration: none;
-    transition: all 0.15s;
-    margin-right: 5px;
-  }
-  .btn-lt { border: 1px solid var(--accent); color: var(--accent); }
-  .btn-lt:hover { background: var(--accent); color: var(--bg); }
-  .btn-en { border: 1px solid var(--accent2); color: var(--accent2); }
-  .btn-en:hover { background: var(--accent2); color: var(--bg); }
-
-  .hidden { display: none !important; }
-
-  #no-results {
-    text-align: center;
-    color: var(--muted);
-    padding: 64px;
-    font-size: 0.85rem;
-    display: none;
-  }
-
-  ::-webkit-scrollbar { width: 5px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--border); }
+  .hidden{display:none!important}
+  #no-results{text-align:center;color:var(--muted);padding:64px 32px;font-size:.9rem;display:none}
+  ::-webkit-scrollbar{width:6px;height:6px}
+  ::-webkit-scrollbar-track{background:var(--bg2)}
+  ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
 </style>
 </head>
 <body>
 
-<header>
-  <div class="header-top">
-    <div class="header-left">
-      <h1>Audio Knygos LT</h1>
-      <span class="count" id="visible-count">2080 knygų</span>
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <h2>Anthropic API raktas</h2>
+    <p>
+      Žanrams nustatyti reikalingas Anthropic API raktas.<br>
+      Nemokamą raktą galite gauti: <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a><br><br>
+      <strong>Raktas naudojamas tik jūsų naršyklėje</strong> — tiesiogiai į Anthropic API, niekur kitur nesiunčiamas.
+    </p>
+    <input type="password" class="api-input" id="api-key-input" placeholder="sk-ant-api03-..." autocomplete="off">
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Atšaukti</button>
+      <button class="btn-start" onclick="confirmKey()">Pradėti ▶</button>
     </div>
-    <button class="classify-btn" id="classify-btn" onclick="startClassification()">
-      ✦ Nustatyti žanrus (AI)
+  </div>
+</div>
+
+<header>
+  <div class="header-row1">
+    <div class="brand">
+      <h1>Audio Knygos <span>LT</span></h1>
+      <span class="pill-count" id="vis-count">2040 knygų</span>
+    </div>
+    <button class="classify-btn" id="cls-btn" onclick="openModal()">
+      ✦ Patikslinti žanrus (AI)
     </button>
   </div>
-
-  <div class="controls">
+  <div class="header-row2">
     <div class="search-wrap">
-      <span class="search-icon">⌕</span>
-      <input type="text" id="search" placeholder="Ieškoti knygos ar autoriaus..." autocomplete="off">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="search" placeholder="Ieškoti knygos ar autoriaus…" autocomplete="off">
     </div>
-    <div class="genre-filters" id="genre-filters">
-      <span style="font-size:0.65rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-right:4px;">Žanras:</span>
-      <button class="genre-tag active" data-genre="Visi" onclick="filterGenre(this)">Visi</button>
-      <button class="genre-tag" data-genre="Detektyvas" onclick="filterGenre(this)">Detektyvas</button>
-      <button class="genre-tag" data-genre="Drama" onclick="filterGenre(this)">Drama</button>
-      <button class="genre-tag" data-genre="Trileris" onclick="filterGenre(this)">Trileris</button>
-      <button class="genre-tag" data-genre="Fantastika" onclick="filterGenre(this)">Fantastika</button>
-      <button class="genre-tag" data-genre="Istorinis" onclick="filterGenre(this)">Istorinis</button>
-      <button class="genre-tag" data-genre="Romantika" onclick="filterGenre(this)">Romantika</button>
-      <button class="genre-tag" data-genre="Biografija" onclick="filterGenre(this)">Biografija</button>
-      <button class="genre-tag" data-genre="Siaubo" onclick="filterGenre(this)">Siaubo</button>
-      <button class="genre-tag" data-genre="Saviugda" onclick="filterGenre(this)">Saviugda</button>
-      <button class="genre-tag" data-genre="Humoristinis" onclick="filterGenre(this)">Humoristinis</button>
-      <button class="genre-tag" data-genre="Vaikams" onclick="filterGenre(this)">Vaikams</button>
-      <button class="genre-tag" data-genre="Kita" onclick="filterGenre(this)">Kita</button>
+    <div class="genre-scroll">
+      <button class="gp active" data-g="Visi" onclick="setGenre(this)">Visos</button>
+      <button class="gp" data-g="Detektyvas" onclick="setGenre(this)">Detektyvas</button>
+      <button class="gp" data-g="Drama" onclick="setGenre(this)">Drama</button>
+      <button class="gp" data-g="Trileris" onclick="setGenre(this)">Trileris</button>
+      <button class="gp" data-g="Fantastika" onclick="setGenre(this)">Fantastika</button>
+      <button class="gp" data-g="Istorinis" onclick="setGenre(this)">Istorinis</button>
+      <button class="gp" data-g="Romantika" onclick="setGenre(this)">Romantika</button>
+      <button class="gp" data-g="Biografija" onclick="setGenre(this)">Biografija</button>
+      <button class="gp" data-g="Siaubo" onclick="setGenre(this)">Siaubo</button>
+      <button class="gp" data-g="Saviugda" onclick="setGenre(this)">Saviugda</button>
+      <button class="gp" data-g="Humoristinis" onclick="setGenre(this)">Humoristinis</button>
+      <button class="gp" data-g="Vaikams" onclick="setGenre(this)">Vaikams</button>
+      <button class="gp" data-g="Kita" onclick="setGenre(this)">Kita</button>
     </div>
   </div>
-
-  <div id="progress-bar-wrap"><div id="progress-bar"></div></div>
-  <div id="progress-label"></div>
+  <div id="prog-wrap"><div id="prog-bar"></div></div>
+  <div id="prog-label"></div>
 </header>
 
 <main>
-  <table id="books-table">
-    <thead>
-      <tr>
-        <th style="text-align:right">#</th>
-        <th>Pavadinimas / Autorius</th>
-        <th>Žanras</th>
-        <th>Aprašymas</th>
-      </tr>
-    </thead>
-    <tbody id="tbody"></tbody>
-  </table>
-  <div id="no-results">Knygų nerasta.</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="text-align:right">#</th>
+          <th>Autorius / Pavadinimas</th>
+          <th>Žanras</th>
+          <th>Aprašymas</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div id="no-results">Knygų nerasta pagal paieškos kriterijus.</div>
+  </div>
 </main>
 
-<script>
-// ── DATA (injected by Python) ──────────────────────────────────────────────
-</script>
 <script src="books_data.js"></script>
 <script>
-// ── STATE ──────────────────────────────────────────────────────────────────
-let activeGenre = 'Visi';
-let searchQuery = '';
-let classifying = false;
+let activeGenre='Visi',q='',apiKey='';
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 
-// ── RENDER ─────────────────────────────────────────────────────────────────
-function buildTable() {
-  const tbody = document.getElementById('tbody');
-  const fragment = document.createDocumentFragment();
-  BOOKS.forEach((b, i) => {
-    const tr = document.createElement('tr');
-    tr.className = 'book-row';
-    tr.dataset.idx = i;
-    tr.innerHTML = `
-      <td class="num">${i + 1}</td>
-      <td class="title">${escHtml(b.t)}</td>
-      <td class="genre-cell"><span class="genre-badge" id="gb-${i}" data-g="${escHtml(b.g)}">${b.g || '—'}</span></td>
-      <td class="links">
-        <a href="${b.lt}" target="_blank" class="btn-lt">🇱🇹 LT</a>
-        <a href="${b.en}" target="_blank" class="btn-en">🌐 EN</a>
-      </td>`;
-    fragment.appendChild(tr);
+function buildTable(){
+  const tbody=document.getElementById('tbody'),frag=document.createDocumentFragment();
+  BOOKS.forEach((b,i)=>{
+    const tr=document.createElement('tr');
+    tr.className='book-row';tr.dataset.i=i;
+    const g=b.g||'Kita';
+    tr.innerHTML=`<td class="td-num">${i+1}</td><td class="td-title">${esc(b.t)}</td><td><span class="gb" id="gb${i}" data-g="${esc(g)}">${g}</span></td><td class="td-links"><a href="${b.lt}" target="_blank" class="btn-lt">🇱🇹 LT</a><a href="${b.en}" target="_blank" class="btn-en">🌐 EN</a></td>`;
+    frag.appendChild(tr);
   });
-  tbody.appendChild(fragment);
-  updateVisibleCount();
+  tbody.appendChild(frag);updateCount();
 }
 
-function escHtml(s) {
-  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-// ── FILTER ─────────────────────────────────────────────────────────────────
-function applyFilters() {
-  const rows = document.querySelectorAll('.book-row');
-  let visible = 0;
-  rows.forEach(row => {
-    const idx = parseInt(row.dataset.idx);
-    const b = BOOKS[idx];
-    const titleMatch = b.t.toLowerCase().includes(searchQuery);
-    const genreMatch = activeGenre === 'Visi' || b.g === activeGenre;
-    if (titleMatch && genreMatch) {
-      row.classList.remove('hidden');
-      visible++;
-    } else {
-      row.classList.add('hidden');
-    }
+function filter(){
+  const rows=document.querySelectorAll('.book-row');let n=0;
+  rows.forEach(row=>{
+    const b=BOOKS[+row.dataset.i],g=b.g||'Kita';
+    const ok=b.t.toLowerCase().includes(q)&&(activeGenre==='Visi'||g===activeGenre);
+    row.classList.toggle('hidden',!ok);if(ok)n++;
   });
-  document.getElementById('no-results').style.display = visible === 0 ? 'block' : 'none';
-  updateVisibleCount(visible);
+  document.getElementById('no-results').style.display=n===0?'block':'none';
+  updateCount(n);
 }
 
-function updateVisibleCount(n) {
-  const total = BOOKS.length;
-  if (n === undefined) n = total;
-  document.getElementById('visible-count').textContent = n === total ? `${total} knygų` : `${n} / ${total}`;
+function updateCount(n){const t=BOOKS.length;document.getElementById('vis-count').textContent=(n===undefined||n===t)?`${t} knygų`:`${n} / ${t}`}
+document.getElementById('search').addEventListener('input',e=>{q=e.target.value.toLowerCase();filter()});
+function setGenre(btn){activeGenre=btn.dataset.g;document.querySelectorAll('.gp').forEach(b=>b.classList.remove('active'));btn.classList.add('active');filter()}
+
+function openModal(){document.getElementById('modal').classList.add('open');document.getElementById('api-key-input').focus()}
+function closeModal(){document.getElementById('modal').classList.remove('open')}
+function confirmKey(){
+  const key=document.getElementById('api-key-input').value.trim();
+  if(!key.startsWith('sk-')){alert('Neteisingas API raktas. Turi prasidėti sk-');return}
+  apiKey=key;closeModal();startClassify();
 }
+document.getElementById('modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});
 
-document.getElementById('search').addEventListener('input', e => {
-  searchQuery = e.target.value.toLowerCase();
-  applyFilters();
-});
+async function startClassify(){
+  const btn=document.getElementById('cls-btn');
+  btn.disabled=true;btn.innerHTML='⏳ Klasifikuojama…';
+  document.getElementById('prog-wrap').style.display='block';
+  document.getElementById('prog-label').style.display='block';
+  const GENRES=['Detektyvas','Drama','Trileris','Fantastika','Istorinis','Romantika','Biografija','Siaubo','Saviugda','Humoristinis','Vaikams','Kita'];
+  const toClassify=BOOKS.map((b,i)=>({b,i})).filter(({b})=>!b.g||b.g==='Kita');
+  const total=toClassify.length;let done=0;const BATCH=80;
 
-function filterGenre(btn) {
-  activeGenre = btn.dataset.genre;
-  document.querySelectorAll('.genre-tag').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  applyFilters();
-}
-
-// ── AI CLASSIFICATION ──────────────────────────────────────────────────────
-async function startClassification() {
-  if (classifying) return;
-  classifying = true;
-  const btn = document.getElementById('classify-btn');
-  btn.disabled = true;
-  btn.textContent = '⏳ Klasifikuojama...';
-
-  document.getElementById('progress-bar-wrap').style.display = 'block';
-  document.getElementById('progress-label').style.display = 'block';
-
-  const BATCH = 80;
-  const total = BOOKS.length;
-  let done = 0;
-
-  const GENRES = ['Detektyvas','Drama','Trileris','Fantastika','Istorinis','Romantika','Biografija','Siaubo','Saviugda','Humoristinis','Vaikams','Kita'];
-
-  for (let i = 0; i < total; i += BATCH) {
-    const slice = BOOKS.slice(i, i + BATCH);
-    const titles = slice.map((b, j) => `${j}. ${b.t}`).join('\n');
-
-    try {
-      const resp = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1000,
-          system: `Tu esi knygų žanrų klasifikatorius. Tau bus pateiktas sąrašas knygų pavadinimų (su numeriais). Grąžink TIKTAI JSON masyvą su žanrais tokia tvarka kaip sąraše. Galimi žanrai: ${GENRES.join(', ')}. Naudok tik šiuos žanrus. Grąžink tik JSON masyvą, be jokio teksto, be markdown. Pvz: ["Detektyvas","Drama","Fantastika"]`,
-          messages: [{ role: 'user', content: titles }]
+  for(let s=0;s<total;s+=BATCH){
+    const slice=toClassify.slice(s,s+BATCH);
+    const titles=slice.map(({b},j)=>`${j}. ${b.t}`).join('\n');
+    try{
+      const r=await fetch('https://api.anthropic.com/v1/messages',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+        body:JSON.stringify({
+          model:'claude-haiku-4-5-20251001',max_tokens:1000,
+          system:`Esi knygų žanrų klasifikatorius. Gauri knygų pavadinimų sąrašą su numeriais. Grąžink TIKTAI JSON masyvą su žanrais ta pačia tvarka. Galimi žanrai: ${GENRES.join(', ')}. Grąžink tik JSON masyvą, be markdown.`,
+          messages:[{role:'user',content:titles}]
         })
       });
-
-      const data = await resp.json();
-      const text = data.content?.[0]?.text || '[]';
-      const clean = text.replace(/```json|```/g, '').trim();
-      let genres = [];
-      try { genres = JSON.parse(clean); } catch(e) { genres = []; }
-
-      slice.forEach((b, j) => {
-        const g = genres[j];
-        if (g && GENRES.includes(g)) {
-          BOOKS[i + j].g = g;
-          const badge = document.getElementById(`gb-${i + j}`);
-          if (badge) {
-            badge.textContent = g;
-            badge.dataset.g = g;
-            badge.classList.add('classified');
-          }
-        } else {
-          BOOKS[i + j].g = 'Kita';
-          const badge = document.getElementById(`gb-${i + j}`);
-          if (badge) { badge.textContent = 'Kita'; badge.dataset.g = 'Kita'; }
-        }
+      const d=await r.json();
+      if(d.error){console.error('API error:',d.error.message);break}
+      const txt=(d.content?.[0]?.text||'[]').replace(/```json|```/g,'').trim();
+      let genres=[];try{genres=JSON.parse(txt)}catch(e){}
+      slice.forEach(({b,i},j)=>{
+        const g=GENRES.includes(genres[j])?genres[j]:'Kita';
+        BOOKS[i].g=g;const el=document.getElementById(`gb${i}`);
+        if(el){el.textContent=g;el.dataset.g=g}
       });
-
-    } catch(e) {
-      console.error('Batch error:', e);
-    }
-
-    done += slice.length;
-    const pct = Math.round(done / total * 100);
-    document.getElementById('progress-bar').style.width = pct + '%';
-    document.getElementById('progress-label').textContent = `Klasifikuota: ${done} / ${total} knygų`;
-
-    // small delay between batches
-    await new Promise(r => setTimeout(r, 300));
+    }catch(e){console.error('Fetch error:',e)}
+    done+=slice.length;
+    document.getElementById('prog-bar').style.width=Math.round(done/total*100)+'%';
+    document.getElementById('prog-label').textContent=`Klasifikuota: ${done} / ${total}`;
+    await new Promise(r=>setTimeout(r,200));
   }
-
-  classifying = false;
-  btn.disabled = false;
-  btn.textContent = '✓ Žanrai nustatyti';
-  document.getElementById('progress-label').textContent = `✓ Visos ${total} knygos klasifikuotos!`;
-
-  // Re-apply filters in case genre filter is active
-  applyFilters();
+  btn.disabled=false;btn.innerHTML='✓ Žanrai atnaujinti';
+  document.getElementById('prog-label').textContent='✓ Klasifikavimas baigtas!';
+  filter();
 }
-
-// ── INIT ───────────────────────────────────────────────────────────────────
 buildTable();
 </script>
 </body>
